@@ -1,21 +1,31 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useEffect, useState } from "react";
+import { InputTodo } from './components/InputTodo'
+import { IncompleteTodos } from "./components/IncompleteTodos";
+import { CompleteTodos } from "./components/CompleteTodos";
 
 export const App = () => {
+  // 【State】入力された値を管理するState
   const [todoText, setTodoText] = useState("");
-  // 未完了のtodoリストを管理するState
+  // 【State】未完了のtodoリストを管理するState
   const [incompleteTodos, setIncompleteTodos] = useState([
-    "NotYetaaaaa",
-    "NotYetbbbbb",
-    "NotYetccccc",
+    "たまごを買う",
+    "小松菜を買う",
+    "牛乳を買う",
+    "Netflixを見る",
   ]);
-  // 完了のtodoリストを管理するState
-  const [completeTodos, setCompleteTodos] = useState(["ddddd", "eeeee"]);
+  // 【State】完了のtodoリストを管理するState
+  const [completeTodos, setCompleteTodos] = useState([
+    "部屋の掃除をする",
+    "キッチン周りを掃除する",
+  ]);
 
   // event.target.valueで入力された値を取得できる
+  // 【関数】入力欄に入力された値を取得する処理
   const onChangeTodoText = (event) => setTodoText(event.target.value);
 
+  // 【関数】追加ボタンを押したときの処理
   const onClickAdd = () => {
     if (todoText === "") return;
     // incompleteTodos.push(todoText);
@@ -26,6 +36,7 @@ export const App = () => {
     setTodoText("");
   };
 
+  // 【関数】削除ボタンを押したときの処理
   const onClickDelete = (index) => {
     // alert(index+1 + '番目の要素を削除');
     const newTodos = [...incompleteTodos];
@@ -34,9 +45,9 @@ export const App = () => {
     newTodos.splice(index, 1);
     // 未完了のtodoリストから削除したtodoを削除(Sateを更新)
     setIncompleteTodos(newTodos);
-  }
+  };
 
-// 完了ボタンを押したときの処理
+  // 【関数】完了ボタンを押したときの処理
   const onClickComplete = (index) => {
     // alert(index+1 + '番目の要素を完了');
     const newIncompleteTodos = [...incompleteTodos];
@@ -52,56 +63,45 @@ export const App = () => {
     setCompleteTodos(newCompleteTodos);
   };
 
+  // 【関数】戻すボタンを押したときの処理
+  const onClickBack = (index) => {
+    // alert(index+1 + '番目の要素を戻す');
+    const newCompleteTodos = [...completeTodos];
+    // spliceは配列の要素を削除するメソッド
+    // splice(削除する要素のindex, 削除する要素の数)
+    newCompleteTodos.splice(index, 1);
+
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+    // 未完了のtodoリストに新しいtodoを追加
+    setIncompleteTodos(newIncompleteTodos);
+  };
+
   return (
     <div className="app">
       <div className="header">
         <h1>TODOアプリ</h1>
-        <div className="input-container">
-          {/* inputの変更がかかった際にonChangeTodoTextを実行 */}
-          <input type="text" placeholder="TODOを入力" value={todoText} onChange={onChangeTodoText} />
-          <button onClick={onClickAdd}>追加</button>
-        </div>
+
+        <InputTodo
+          todoText={todoText}
+          onChange={onChangeTodoText}
+          onClick={onClickAdd}
+        />
       </div>
 
       <div className="todo-container">
-        <div className="todo-section">
-          <h2 className="title">未完了のTODO</h2>
-          <ul>
-            {incompleteTodos.map((todo, index) => {
-              return (
-                <li>
-                  <div key={todo} className="todo-item">
-                    <span>{todo}</span>
-                    <div>
-                      <button onClick={() => onClickComplete(index)}>完了</button>
-                      <button onClick={() => onClickDelete(index)}>削除</button>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
+        <IncompleteTodos
+          todos={incompleteTodos}
+          onClickComplete={onClickComplete}
+          onClickDelete={onClickDelete}
+        />
 
-          </ul>
-        </div>
+        <br></br>
 
-        <div className="todo-section">
-          <h2 className="title">完了したTODO</h2>
-          <ul>
-            {completeTodos.map((todo) => {
-              return (
-                <li>
-                  <div key={todo} className="todo-item">
-                    <span>{todo}</span>
-                    <div>
-                      <button>戻す</button>
-                    </div>
-                  </div>
-                </li>
-              );
-            }
-            )}
-          </ul>
-        </div>
+        <CompleteTodos
+          completeTodos={completeTodos}
+          onClickBack={onClickBack}
+        />
+
       </div>
     </div>
   );
