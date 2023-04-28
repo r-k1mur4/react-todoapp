@@ -1,3 +1,31 @@
+# ReactベースのTODOリスト管理アプリ  
+- [ReactベースのTODOリスト管理アプリ](#reactベースのtodoリスト管理アプリ)
+  - [概要](#概要)
+  - [使い方](#使い方)
+
+## 概要
+**ReactベースのTODOリスト管理アプリ**  
+- 未完了のTODO、完了したTODOはStateで状態管理しています。  
+- 各セクション（入力欄、未完了のTODO、完了したTODO）はコンポーネント化してApp.jsxでまとめてimportすることで汎用性を高めました。  
+- CSS-in-JSを使用、コンポーネントにあたるスタイルはそのコンポーネントで完結するようにしました。  
+
+
+
+## 使い方
+1. 入力欄（TODOを入力）にTODOを入力後、「追加」ボタンを押下  
+   -> 未完了のTODOリストにTODOが追加される  
+  
+1. 完了したTODOは未完了のTODOリストから完了ボタンを押下  
+  -> 完了したTODOしたリストへ、完了ボタンを押下したTODOリストが追加される  
+  ※誤って追加したTODOは削除ボタンで削除することも可能
+  
+1. 完了したTODOを再度TODOリストへ追加したい場合、戻すボタンを押下  
+
+
+
+
+***
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
